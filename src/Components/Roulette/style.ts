@@ -7,7 +7,7 @@ export const Content = styled.div`
 `;
 
 export const RoulettModal = styled.div`
-  ${tw``}
+  ${tw`w-[500px] h-[500px] m-auto relative`}
 `;
 
 export const Title = styled.div`
@@ -43,5 +43,14 @@ export const InputBlock = styled.div`
 `;
 
 export const DrawCanvas = styled.canvas`
-  ${tw`w-[500px] h-[500px] m-auto`}
+  ${tw`w-full h-full rotate-0`}
+`;
+
+export const WheelCenter = styled.div`
+  ${tw`absolute left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%] rounded-full bg-white w-[30px] h-[30px]`}
+`;
+
+
+export const WheelPin = styled.div`
+  ${tw`absolute right-0 top-1/2 translate-y-[-50%] rotate-[90deg] text-[24px]`}
 `;

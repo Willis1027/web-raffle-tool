@@ -7,6 +7,8 @@ import {
   Title,
   InputBlock,
   DrawCanvas,
+  WheelPin,
+  WheelCenter,
 } from "./style";
 
 interface rafflePerson {
@@ -18,10 +20,18 @@ const raffleList: Array<rafflePerson> = [
   { name: "肯德基" },
   { name: "漢堡王" },
   { name: "丹丹漢堡" },
+  { name: "繼光香香雞" },
+  { name: "四海遊龍" },
+  { name: "八方雲集" },
+  { name: "麥味登" },
+  { name: "星巴克" },
+  { name: "50嵐" },
+  { name: "一嵐拉麵" },
 ];
 
 function Roulette() {
   const [raffle, setRaffle] = useState(raffleList);
+  const [wheelDeg, setWhelDeg] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const RaffleRef = useRef<HTMLUListElement>(null);
   const CanvasRef = useRef<HTMLCanvasElement>(null);
@@ -40,6 +50,30 @@ function Roulette() {
     }
   };
 
+  const gameStart = (): void => {
+    if (!CanvasRef.current) return;
+    const gapDeg = Math.floor(360 / raffle.length); // 每個區塊的角度
+    const randomIndex = Math.floor(Math.random() * raffle.length); // 隨機抽獎
+    console.log(raffle[randomIndex]);
+
+    function normalizeDegrees(degrees: number): number {
+      if (degrees < 360) {
+        return 360 - degrees;
+      } else {
+        const remainder = degrees % 360;
+        return 360 - remainder;
+      }
+    }
+
+    const finDeg =
+      wheelDeg +
+      normalizeDegrees(wheelDeg) +
+      (360 - gapDeg * (randomIndex + 1));
+
+    setWhelDeg(finDeg);
+    CanvasRef.current.style.transform = `rotate(${finDeg}deg)`;
+  };
+
   useEffect(() => {
     if (!CanvasRef.current) return;
     const ctx = CanvasRef.current?.getContext("2d");
@@ -49,7 +83,6 @@ function Roulette() {
     const radius = 520; // 半徑
     let startAngle = 0; // 初始角度
     const sliceAngle = (2 * Math.PI) / raffle.length; // 每塊扇形角度
-
 
     // 繪製圓餅圖外框
     ctx.strokeStyle = "#000000";
@@ -91,8 +124,14 @@ function Roulette() {
 
   return (
     <Content>
-      <RoulettModal>
+      <RoulettModal
+        onClick={() => {
+          gameStart();
+        }}
+      >
         <DrawCanvas ref={CanvasRef} width={"1080"} height={"1080"}></DrawCanvas>
+        <WheelCenter></WheelCenter>
+        <WheelPin>▼</WheelPin>
       </RoulettModal>
       <Title>抽獎名單</Title>
       <RaffleList ref={RaffleRef}>
