@@ -43,5 +43,5 @@ export const InputBlock = styled.div`
 `;
 
 export const DrawCanvas = styled.canvas`
-  ${tw`w-[500px] h-[500px]`}
+  ${tw`w-[500px] h-[500px] m-auto`}
 `;

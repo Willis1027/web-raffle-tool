@@ -46,12 +46,22 @@ function Roulette() {
     if (!ctx) return;
     const centerX = CanvasRef.current.width / 2; // 圓心座標點
     const centerY = CanvasRef.current.height / 2; // 圓心座標點
-    const radius = 540; // 半徑
+    const radius = 520; // 半徑
     let startAngle = 0; // 初始角度
     const sliceAngle = (2 * Math.PI) / raffle.length; // 每塊扇形角度
+
+
+    // 繪製圓餅圖外框
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 6;
+    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+    ctx.closePath();
+    ctx.stroke();
+
     for (let i = 0; i < raffle.length; i++) {
       ctx.fillStyle = "#FF8225";
       ctx.strokeStyle = "#000000";
+      ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(centerX, centerY);
       ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
@@ -61,16 +71,16 @@ function Roulette() {
 
       // 計算扇形中心角度
       const textAngle = startAngle + sliceAngle / 2;
-      const textX = centerX + (radius / 2) * Math.cos(textAngle);
-      const textY = centerY + (radius / 2) * Math.sin(textAngle);
+      const textX = centerX + (radius - 30) * Math.cos(textAngle);
+      const textY = centerY + (radius - 30) * Math.sin(textAngle);
 
       // 加上文字
       ctx.save(); // 保存畫布狀態
       ctx.translate(textX, textY);
       ctx.rotate(textAngle);
       ctx.fillStyle = "black"; // 選擇合適的文字顏色
-      ctx.font = "36px Arial";
-      ctx.textAlign = "left";
+      ctx.font = "52px Arial";
+      ctx.textAlign = "right";
       ctx.textBaseline = "middle";
       ctx.fillText(raffle[i]["name"], 0, 0);
       ctx.restore(); // 還原畫布狀態
