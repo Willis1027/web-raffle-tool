@@ -43,13 +43,14 @@ export const InputBlock = styled.div`
 `;
 
 export const DrawCanvas = styled.canvas`
-  ${tw`w-full h-full rotate-0`}
+  ${tw`w-full h-full`}
+  transition-duration:10s;
+  transition-timing-function: cubic-bezier(0.6, 0, 0, 1);
 `;
 
 export const WheelCenter = styled.div`
   ${tw`absolute left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%] rounded-full bg-white w-[30px] h-[30px]`}
 `;
-
 
 export const WheelPin = styled.div`
   ${tw`absolute right-0 top-1/2 translate-y-[-50%] rotate-[90deg] text-[24px]`}
