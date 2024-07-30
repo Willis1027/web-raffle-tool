@@ -10,9 +10,6 @@ function Nav() {
       <li>
         <Link to="/roulette">轉盤</Link>
       </li>
-      <li>
-        <Link to="/punchBoard">戳戳樂</Link>
-      </li>
     </Content>
   );
 }
