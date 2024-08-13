@@ -9,6 +9,8 @@ import {
   DrawCanvas,
   WheelPin,
   WheelCenter,
+  Winner,
+  InfWrap,
 } from "./style";
 
 const raffleList: Array<string> = [
@@ -17,21 +19,23 @@ const raffleList: Array<string> = [
   "漢堡王",
   "丹丹漢堡",
   "繼光香香雞",
+  "起家雞",
   "四海遊龍",
   "八方雲集",
 ];
 
 function Roulette() {
   const [raffle, setRaffle] = useState(raffleList);
+  const [winner, setwinner] = useState<string>("");
   const [wheelDeg, setWhelDeg] = useState(0);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const RaffleRef = useRef<HTMLUListElement>(null);
-  const CanvasRef = useRef<HTMLCanvasElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null); // 輸入框
+  const RaffleListRef = useRef<HTMLUListElement>(null); // 列表
+  const CanvasRef = useRef<HTMLCanvasElement>(null); // 輪盤
 
   const addNewItem = (): void => {
     const inputElement = inputRef.current;
-    const UlListElement = RaffleRef.current;
-    if (inputElement && UlListElement && inputElement.value !== "") {
+    const RaffleListElement = RaffleListRef.current;
+    if (inputElement && RaffleListElement && inputElement.value !== "") {
       const inputValue = inputElement.value; // 首先保存輸入值到一個變量
       setRaffle((prev) => {
         const newDataList: Array<string> = [...prev];
@@ -44,10 +48,18 @@ function Roulette() {
 
   const gameStart = (): void => {
     if (!CanvasRef.current) return;
+
+    // 中獎者歸零
+    setwinner("");
     const gapDeg = parseFloat((360 / raffle.length).toFixed(2)); // 每個區塊的角度
     const randomIndex = Math.floor(Math.random() * raffle.length); // 隨機抽獎
-    console.log(raffle[randomIndex]); // 實際中獎
 
+    // 設定本輪中獎者
+    setTimeout(() => {
+      setwinner(raffle[randomIndex]);
+    }, 10000);
+
+    // 算出歸位所需角度
     function normalizeDegrees(degrees: number): number {
       if (degrees < 360) {
         return 360 - degrees;
@@ -60,7 +72,7 @@ function Roulette() {
     const finDeg =
       // 當前旋轉角度
       wheelDeg +
-      // 角度歸復
+      // 角度歸位
       normalizeDegrees(wheelDeg) +
       // 旋轉度數
       (720 +
@@ -126,6 +138,12 @@ function Roulette() {
     }
   }, [raffle]);
 
+  // 列表改變，將滾動條滑至底部
+  useEffect(() => {
+    if (!RaffleListRef.current) return;
+    RaffleListRef.current.scrollTop = RaffleListRef.current.scrollHeight;
+  }, [raffle]);
+
   return (
     <Content>
       <RoulettModal
@@ -137,22 +155,35 @@ function Roulette() {
         <WheelCenter></WheelCenter>
         <WheelPin>▼</WheelPin>
       </RoulettModal>
-      <Title>抽獎名單</Title>
-      <RaffleList ref={RaffleRef}>
-        {raffle.map((item, index) => {
-          return <li key={index}>{item}</li>;
-        })}
-      </RaffleList>
-      <InputBlock>
-        <input type="text" name="輪盤選項" id="roulette-item" ref={inputRef} />
-        <button
-          onClick={() => {
-            addNewItem();
-          }}
-        >
-          新增
-        </button>
-      </InputBlock>
+
+      <InfWrap>
+        <Title>抽獎名單</Title>
+        <RaffleList ref={RaffleListRef}>
+          {raffle.map((item, index) => {
+            return (
+              <li key={index}>
+                ({index + 1}) {item}
+              </li>
+            );
+          })}
+        </RaffleList>
+        <InputBlock>
+          <input
+            type="text"
+            name="輪盤選項"
+            id="roulette-item"
+            ref={inputRef}
+          />
+          <button
+            onClick={() => {
+              addNewItem();
+            }}
+          >
+            新增
+          </button>
+        </InputBlock>
+        <Winner>{winner}</Winner>
+      </InfWrap>
     </Content>
   );
 }

@@ -11,7 +11,6 @@ interface RouterSite {
 
 const RouterArray: Array<RouterSite> = [
   { text: "轉盤", router: "/roulette" },
-  { text: "轉盤", router: "/roulette" },
   { text: "戳戳樂", router: "/roulette" },
 ];
 
