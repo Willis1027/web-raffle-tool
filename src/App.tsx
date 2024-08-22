@@ -1,18 +1,7 @@
-import { Routes, Route } from "react-router-dom";
-
-import Roulette from "./Components/Roulette/Roulette";
-import Nav from "./Components/Nav/Nav";
+import ScrollTest from "./Components/ScrollTest/ScrollTest";
 
 function App() {
-  return (
-    <>
-      <Nav></Nav>
-      <Routes>
-        <Route path="/" element={<Roulette />}></Route>
-        <Route path="/roulette" element={<Roulette />}></Route>
-      </Routes>
-    </>
-  );
+  return <ScrollTest></ScrollTest>;
 }
 
 export default App;
